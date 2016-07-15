@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_color">
+
+    <include layout="@layout/layout_title"/>
+
+    <LinearLayout
+        android:id="@+id/ll_recipient"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/ll_title"
+        android:orientation="vertical"
+        android:background="#994a5a6a">
+
+        <ListView
+            android:id="@+id/lv_recipient_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:dividerHeight="0dp"
+            android:divider="@null"/>
+
+        <TextView
+            android:id="@+id/tv_no_online"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/no_one_online"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/White"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
