@@ -3,21 +3,20 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_color"
-    android:padding="10dp">
+    android:background="@color/theme_color">
 
     <ImageView
         android:id="@+id/iv_logo"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/image_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/logo"
         android:layout_centerInParent="true"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/loading_bar"
-        android:paddingBottom="30dp"
+        android:layout_below="@+id/iv_logo"
+        android:layout_margin="5dp"
         android:gravity="center"
         android:textSize="20sp"
         android:textColor="@color/White"
@@ -28,11 +27,8 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:indeterminate="false"
         android:progressDrawable="@drawable/custom_progress_drawable"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp" />
-
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

@@ -6,13 +6,19 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.siliconorchard.notification.R;
 import com.siliconorchard.notification.asynctask.SendMessageAsync;
@@ -308,5 +314,78 @@ public class Utils {
         byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
         Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return decodedBitmap;
+    }
+
+
+    /**
+     * Hides the soft keyboard
+     */
+    public static void hideSoftKeyboard(Activity activity) {
+        if(activity.getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * Shows the soft keyboard
+     */
+    public static void showSoftKeyboard(Activity activity, View view) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        view.requestFocus();
+        inputMethodManager.showSoftInput(view, 0);
+    }
+
+    private static Integer SCREEN_HEIGHT;
+    private static Integer SCREEN_WIDTH;
+
+
+
+    public static int getScreenHeight(Context context) {
+        if(SCREEN_HEIGHT == null) {
+            findScreenResolution(context);
+        }
+        return SCREEN_HEIGHT;
+    }
+
+    public static int getScreenWidth(Context context) {
+        if(SCREEN_WIDTH == null) {
+            findScreenResolution(context);
+        }
+        return SCREEN_WIDTH;
+    }
+
+    /**
+     * Get display screen height and width
+     * @param {context} activity context
+     */
+    private static void findScreenResolution(Context context)
+    {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        SCREEN_WIDTH= metrics.widthPixels;
+        SCREEN_HEIGHT = metrics.heightPixels;
+    }
+
+    /*
+    * Converts density-independent pixels to actual pixel
+    * @param: {int} density-independent pixel
+    * @return: {int} pixel
+    * */
+    public static int dpToPx(int dp)
+    {
+        return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+    }
+
+    /*
+    * Converts actual pixel to density-independent pixels
+    * @param: {int} pixel
+    * @return: {int} density-independent pixel
+    * */
+    public static int pxToDp(int px)
+    {
+        return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
 }

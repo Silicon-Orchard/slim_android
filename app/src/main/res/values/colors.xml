@@ -159,4 +159,5 @@
     <color name="loading_panel_bg">#aa100d08</color>
     <color name="bg_color">#2c3e51</color>
     <color name="transparent_bg">#994a5a6a</color>
+    <color name="theme_color">#00a651</color>
 </resources>

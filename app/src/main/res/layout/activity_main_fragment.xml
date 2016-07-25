@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/theme_color"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:gravity="center">
+        <!--<android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/theme_color"
+            app:tabPaddingEnd="5dp"
+            app:tabPaddingStart="5dp" />-->
+        <RadioGroup
+            android:id="@+id/rg_tab"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:clickable="true">
+            <RadioButton
+                android:id="@+id/rb_contact_list"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/contact_list"
+                android:textAllCaps="false"
+                android:button="@null"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@drawable/tab_text_color"
+                android:background="@drawable/tab_design_contact_list"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+                android:clickable="true"/>
+            <RadioButton
+                android:id="@+id/rb_profile"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/profile"
+                android:background="@drawable/tab_design_profile"
+                android:textColor="@drawable/tab_text_color"
+                android:button="@null"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:paddingBottom="10dp"
+                android:gravity="center"
+                android:clickable="true"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_layout_main"
+        android:background="@drawable/fragment_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

@@ -1,12 +1,10 @@
-package com.siliconorchard.notification.activity;
+package com.siliconorchard.notification.fragments;
 
-import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
 import com.siliconorchard.notification.dialog.PopupSelectPictureOption;
@@ -16,10 +14,9 @@ import com.siliconorchard.notification.utilities.Utils;
 import java.io.File;
 
 /**
- * Created by adminsiriconorchard on 6/20/16.
+ * Created by adminsiriconorchard on 7/25/16.
  */
-public class ActivitySelectFileAndPhotoBase extends Activity {
-
+public abstract class FragmentSelectPictureBase extends FragmentBase{
     protected File mSelectedFile;
     protected static final String FILE_PATH = Constant.BASE_PATH+Constant.MY_PP;
     protected String uriPath;
@@ -29,7 +26,7 @@ public class ActivitySelectFileAndPhotoBase extends Activity {
         if(uriPath == null) {
             Uri fileUri = data.getData();
             if(isImage){
-                mSelectedFile = new File(Utils.getRealPathFromURI(this, fileUri));
+                mSelectedFile = new File(Utils.getRealPathFromURI(getActivity(), fileUri));
             } else {
                 mSelectedFile = new File(fileUri.getPath());
             }
@@ -40,7 +37,7 @@ public class ActivitySelectFileAndPhotoBase extends Activity {
     }
 
     protected void selectPictureOption() {
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
         PopupSelectPictureOption popupSelectPictureOption = new PopupSelectPictureOption();
         popupSelectPictureOption.setOnClickOption(new PopupSelectPictureOption.OnClickOption() {
             @Override
@@ -55,7 +52,7 @@ public class ActivitySelectFileAndPhotoBase extends Activity {
                 }
             }
         });
-        //popupSelectPictureOption.show(fm, "popup_select_picture_options");
+        popupSelectPictureOption.show(fm, "popup_select_picture_options");
     }
 
     private void selectPicture() {
@@ -83,21 +80,5 @@ public class ActivitySelectFileAndPhotoBase extends Activity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uriImage);
         startActivityForResult(intent, Constant.REQUEST_CODE_SELECT_SINGLE_PICTURE);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (uriPath != null) {
-            outState.putString("cameraImageUri", uriPath);
-        }
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState.containsKey("cameraImageUri")) {
-            uriPath = savedInstanceState.getString("cameraImageUri");
-        }
     }
 }

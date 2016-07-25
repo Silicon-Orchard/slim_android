@@ -102,7 +102,7 @@ public class SplashActivity extends Activity {
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                Intent main_intent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent main_intent = new Intent(SplashActivity.this, MainFragmentActivity.class);
                 startActivity(main_intent);
             }
         }.execute();

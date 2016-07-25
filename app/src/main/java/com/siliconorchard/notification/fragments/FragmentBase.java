@@ -1,36 +1,29 @@
-package com.siliconorchard.notification.dialog;
+package com.siliconorchard.notification.fragments;
 
-import android.support.v4.app.DialogFragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.siliconorchard.notification.R;
+import com.siliconorchard.notification.utilities.Constant;
+import com.siliconorchard.notification.utilities.Utils;
 
 
 /**
- * Created by adminsiriconorchard on 8/31/15.
+ * Created by ASUS on 7/31/2015.
  */
-public abstract class PopupBase extends DialogFragment {
-
-    private LinearLayout mLayoutClose;
-
+public abstract class FragmentBase extends Fragment {
+    protected SharedPreferences mSharedPref;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = createView(inflater, container, savedInstanceState);
-        mLayoutClose = (LinearLayout) view.findViewById(R.id.layout_close);
-        if(mLayoutClose != null) {
-            mLayoutClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupBase.this.dismiss();
-                }
-            });
-        }
+        Utils.hideSoftKeyboard(getActivity());
+        mSharedPref = getActivity().getSharedPreferences(Constant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         initView(view);
         initListeners();
         return view;
