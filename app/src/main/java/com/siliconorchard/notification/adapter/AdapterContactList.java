@@ -50,7 +50,11 @@ public class AdapterContactList extends AdapterHostListBase {
         if(hostInfo.getStatus() == null || hostInfo.getStatus().length()<1) {
             viewHolder.tvStatus.setText("No status");
         } else {
-            viewHolder.tvStatus.setText(hostInfo.getStatus());
+            if(hostInfo.getStatus().length() < 35) {
+                viewHolder.tvStatus.setText(hostInfo.getStatus());
+            } else {
+                viewHolder.tvStatus.setText(hostInfo.getStatus().substring(0,35)+"...");
+            }
         }
         viewHolder.ivArrow.setImageDrawable(drawableArrow);
         Bitmap bitmap = mListBitmap.get(position);

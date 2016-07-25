@@ -97,7 +97,9 @@
             android:text="@string/status"
             android:gravity="center"
             android:textSize="32sp"
-            android:textColor="@color/theme_color" />
+            android:textColor="@color/theme_color"
+            android:scrollbars = "vertical"
+            android:maxLines="4"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="3dp"

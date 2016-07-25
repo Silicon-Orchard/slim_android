@@ -3,6 +3,7 @@ package com.siliconorchard.notification.fragments;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,5 +55,6 @@ public class FragmentViewProfile extends FragmentBase {
                 ((FragmentContainerMain) getParentFragment()).popFragment();
             }
         });
+        mTvStatus.setMovementMethod(new ScrollingMovementMethod());
     }
 }
