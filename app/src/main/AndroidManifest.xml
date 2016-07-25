@@ -32,7 +32,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MainFragmentActivity">
+        <activity android:name=".activity.MainFragmentActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".activity.MainActivity"
