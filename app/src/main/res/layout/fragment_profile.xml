@@ -71,6 +71,7 @@
                         android:layout_weight="1"
                         android:textSize="28sp"
                         android:text="@string/user_name"
+                        android:maxLength="128"
                         android:textColor="@color/theme_color"/>
 
                     <EditText
@@ -147,6 +148,7 @@
                         android:textSize="20sp"
                         android:visibility="gone"
                         android:hint="@string/status"
+                        android:maxLength="128"
                         android:textColor="@color/theme_color"/>
 
                     <ImageView
