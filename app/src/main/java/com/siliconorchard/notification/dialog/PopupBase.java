@@ -1,5 +1,7 @@
 package com.siliconorchard.notification.dialog;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +35,7 @@ public abstract class PopupBase extends DialogFragment {
         }
         initView(view);
         initListeners();
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return view;
     }
 

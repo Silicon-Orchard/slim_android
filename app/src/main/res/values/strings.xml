@@ -23,4 +23,6 @@
     <string name="tap_to_change"><u>Tap to Change</u></string>
     <string name="save">Save</string>
     <string name="nearest_people">Nearest People</string>
+    <string name="gallery">Gallery</string>
+    <string name="select_photo">Select Photo</string>
 </resources>
