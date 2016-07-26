@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.siliconorchard.notification.R;
+import com.siliconorchard.notification.dialog.PopupSelectStatus;
 import com.siliconorchard.notification.model.ChatMessage;
 import com.siliconorchard.notification.singleton.GlobalDataHolder;
 import com.siliconorchard.notification.utilities.Constant;
@@ -36,13 +37,13 @@ public class FragmentProfile extends FragmentSelectPictureBase {
     private EditText mEtName;
     private ImageView mIvEditName;
     private TextView mTvStatus;
-    private EditText mEtStatus;
     private ImageView mIvEditStatus;
     private Button mBtnSave;
 
     private String ipAddress;
     private String mName;
     private String mStatus;
+    private int statusChannel;
 
     @Nullable
     @Override
@@ -58,7 +59,6 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         mEtName = (EditText) view.findViewById(R.id.et_name);
         mIvEditName = (ImageView) view.findViewById(R.id.iv_edit_name);
         mTvStatus = (TextView) view.findViewById(R.id.tv_status);
-        mEtStatus = (EditText) view.findViewById(R.id.et_status);
         mIvEditStatus = (ImageView) view.findViewById(R.id.iv_edit_status);
         mBtnSave = (Button) view.findViewById(R.id.btn_save);
         initTextAndImage();
@@ -71,7 +71,7 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         mTvName.setText(mName);
         mTvStatus.setText(mStatus);
         mEtName.setText(mName);
-        mEtStatus.setText(mStatus);
+        statusChannel = mSharedPref.getInt(Constant.KEY_STATUS_CHANNEL, -1);
         if(GlobalDataHolder.getInstance().getProfilePicBitmap() != null) {
             mCivProfile.setImageBitmap(GlobalDataHolder.getInstance().getProfilePicBitmap());
         }
@@ -112,15 +112,13 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         mIvEditStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mTvStatus.getVisibility() == View.GONE) {
-                    mStatus = mEtStatus.getText().toString();
-                    mTvStatus.setText(mStatus);
-                    mTvStatus.setVisibility(View.VISIBLE);
-                    mEtStatus.setVisibility(View.GONE);
-                } else {
-                    mTvStatus.setVisibility(View.GONE);
-                    mEtStatus.setVisibility(View.VISIBLE);
-                }
+                setStatus();
+            }
+        });
+        mTvStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setStatus();
             }
         });
 
@@ -134,6 +132,18 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         mTvStatus.setMovementMethod(new ScrollingMovementMethod());
     }
 
+    private void setStatus() {
+        PopupSelectStatus popupSelectStatus = new PopupSelectStatus();
+        popupSelectStatus.setOnStatusSelect(new PopupSelectStatus.OnStatusSelect() {
+            @Override
+            public void onStatusSelect(int position, String status) {
+                mTvStatus.setText(status);
+                statusChannel = position;
+            }
+        });
+        popupSelectStatus.show(getChildFragmentManager(),"");
+    }
+
     private void imageChange() {
         selectPictureOption();
     }
@@ -142,7 +152,8 @@ public class FragmentProfile extends FragmentSelectPictureBase {
 
     private void postProfileUpdate() {
         mSharedPref.edit().putString(Constant.KEY_MY_DEVICE_NAME, mEtName.getText().toString()).commit();
-        mSharedPref.edit().putString(Constant.KEY_USER_STATUS, mEtStatus.getText().toString()).commit();
+        mSharedPref.edit().putString(Constant.KEY_USER_STATUS, mTvStatus.getText().toString()).commit();
+        mSharedPref.edit().putInt(Constant.KEY_STATUS_CHANNEL, statusChannel);
         if(mSelectedBitmap != null) {
             Utils.saveSaveImageBitmap(Constant.BASE_PATH + Constant.MY_PP, Constant.PROFILE_PIC_NAME, mSelectedBitmap);
             GlobalDataHolder.getInstance().setProfilePicBitmap(mSelectedBitmap);

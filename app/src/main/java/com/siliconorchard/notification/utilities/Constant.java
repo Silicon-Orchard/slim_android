@@ -47,4 +47,14 @@ public class Constant {
     public static final String OTHERS_PIC = "others";
     public static final String PROFILE_PIC_NAME = "profile.png";
     public static final String KEY_USER_STATUS = "user_status";
+    public static final String KEY_STATUS_CHANNEL = "status_channel";
+
+
+    public static String[] STATUSES = {
+            "Wrong",
+            "Right",
+            "Busy",
+            "Free",
+            "Other"
+    };
 }
