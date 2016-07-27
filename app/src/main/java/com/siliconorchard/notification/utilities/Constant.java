@@ -8,6 +8,7 @@ import java.io.File;
  * Created by adminsiriconorchard on 7/13/16.
  */
 public class Constant {
+    public static final int SDK_VERSION = android.os.Build.VERSION.SDK_INT;
     public static final String SHARED_PREF_NAME = "com.siliconorchard.notification";
     public static final String SERVER_SERVICE_NAME = "com.siliconorchard.notification.service";
 
@@ -39,6 +40,8 @@ public class Constant {
     public static final int REQUEST_CODE_SELECT_SINGLE_PICTURE = 4551;
     public static final int REQUEST_CODE_SELECT_ANY_FILE = 4552;
 
+    public static final int READ_PHONE_STATE_PERMISSION = 111;
+
 
     public static final String BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator +
             "WalkieTalkie"+ File.separator + "photo"+ File.separator;
@@ -51,10 +54,15 @@ public class Constant {
 
 
     public static String[] STATUSES = {
-            "Wrong",
-            "Right",
-            "Busy",
-            "Free",
-            "Other"
+            "Ping Pong",
+            "Chess",
+            "Lunch",
+            "Coffee",
+            "Pool",
+            "Foosball",
+            "Board Games",
+            "Hangout",
+            "Walk",
+            "Run"
     };
 }

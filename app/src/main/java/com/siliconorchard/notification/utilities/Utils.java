@@ -1,17 +1,22 @@
 package com.siliconorchard.notification.utilities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -25,6 +30,7 @@ import com.siliconorchard.notification.asynctask.SendMessageAsync;
 import com.siliconorchard.notification.model.ChatMessage;
 import com.siliconorchard.notification.model.HostInfo;
 import com.siliconorchard.notification.service.ServiceServer;
+import com.siliconorchard.notification.singleton.GlobalDataHolder;
 
 import org.json.JSONException;
 
@@ -38,12 +44,72 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.List;
 
 /**
  * Created by adminsiriconorchard on 7/13/16.
  */
 public class Utils {
     private static String DEVICE_NAME;
+    private static String DEVICE_ID;
+
+
+
+    public static boolean findDeviceID(Activity activity, SharedPreferences sharedPreferences) {
+        boolean isPermissionRequested = false;
+        DEVICE_ID = sharedPreferences.getString(Constant.KEY_DEVICE_ID, null);
+        if(DEVICE_ID == null) {
+            try {
+                getDeviceIdFromTelephonyManager(activity, sharedPreferences);
+            } catch (SecurityException e) {
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(activity,
+                        Manifest.permission.READ_PHONE_STATE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(activity,
+                            Manifest.permission.READ_PHONE_STATE)) {
+
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+
+                        ActivityCompat.requestPermissions(activity,
+                                new String[]{Manifest.permission.READ_PHONE_STATE},
+                                Constant.READ_PHONE_STATE_PERMISSION);
+
+                        isPermissionRequested = true;
+                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    }
+                }
+            }
+        }
+
+        return isPermissionRequested;
+    }
+
+    public static String getDeviceId(Activity activity, SharedPreferences sharedPreferences) {
+        if(DEVICE_ID == null) {
+            findDeviceID(activity, sharedPreferences);
+        }
+        return DEVICE_ID;
+    }
+
+    public static void getDeviceIdFromTelephonyManager(Activity activity, SharedPreferences sharedPreferences) {
+        TelephonyManager telephonyManager = (TelephonyManager)activity.getSystemService(Context.TELEPHONY_SERVICE);
+        DEVICE_ID = telephonyManager.getDeviceId();
+        sharedPreferences.edit().putString(Constant.KEY_DEVICE_ID, DEVICE_ID).commit();
+    }
+
+    public static void setDeviceId(String deviceId) {
+        DEVICE_ID = deviceId;
+    }
 
     public static void startServerService(Context context) {
         String ipAddress = getDeviceIpAddress();
@@ -163,6 +229,20 @@ public class Utils {
                 SendMessageAsync sendMessageAsync = new SendMessageAsync();
                 sendMessageAsync.execute(hostInfo, message);
             }
+        }
+    }
+
+
+    public static void sendBroadCastMessageToRegisteredClients(ChatMessage chatMessage) throws JSONException{
+        String message = chatMessage.getJsonString();
+        List<HostInfo> list = GlobalDataHolder.getInstance().getListHostInfo();
+        if(list == null || list.size() < 1) {
+            return;
+        }
+        for(int i = 0; i<list.size(); i++) {
+            HostInfo hostInfo = list.get(i);
+            SendMessageAsync sendMessageAsync = new SendMessageAsync();
+            sendMessageAsync.execute(hostInfo, message);
         }
     }
 

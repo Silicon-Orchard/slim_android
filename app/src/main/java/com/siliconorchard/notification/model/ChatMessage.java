@@ -21,6 +21,7 @@ public class ChatMessage {
     private int channelNumber;
     private String status;
     private String base64Image;
+    private int statusChannel;
 
     private List<HostInfo> clientList;
 
@@ -34,6 +35,7 @@ public class ChatMessage {
     private static final String JSON_KEY_CLIENT_INFO = "client_info";
     private static final String JSON_KEY_STATUS = "status";
     private static final String JSON_KEY_BASE64_IMAGE = "base64image";
+    public static final String JSON_KEY_STATUS_CHANNEL = "status_channel";
 
 
     public static final int TYPE_MESSAGE = 1;
@@ -83,6 +85,7 @@ public class ChatMessage {
             case TYPE_UPDATED_INFO:
                 this.status = jsonObject.getString(JSON_KEY_STATUS);
                 this.base64Image = jsonObject.getString(JSON_KEY_BASE64_IMAGE);
+                this.statusChannel = jsonObject.getInt(JSON_KEY_STATUS_CHANNEL);
                 break;
             case TYPE_LEFT_APPLICATION:
             case TYPE_ONE_TO_ONE_CHAT_REQUEST:
@@ -196,6 +199,14 @@ public class ChatMessage {
         this.base64Image = base64Image;
     }
 
+    public int getStatusChannel() {
+        return statusChannel;
+    }
+
+    public void setStatusChannel(int statusChannel) {
+        this.statusChannel = statusChannel;
+    }
+
     public String getJsonString() throws JSONException{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(JSON_KEY_TYPE, this.type);
@@ -223,6 +234,7 @@ public class ChatMessage {
             case TYPE_UPDATED_INFO:
                 jsonObject.put(JSON_KEY_STATUS, this.status);
                 jsonObject.put(JSON_KEY_BASE64_IMAGE, this.base64Image);
+                jsonObject.put(JSON_KEY_STATUS_CHANNEL, this.statusChannel);
                 break;
             case TYPE_LEFT_APPLICATION:
             case TYPE_ONE_TO_ONE_CHAT_REQUEST:

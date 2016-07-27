@@ -1,0 +1,126 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/WhiteSmoke">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"/>
+
+    <include layout="@layout/layout_title" />
+
+    <ScrollView
+        android:id="@+id/sv_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_title"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_recipient"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@+id/ll_title"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:background="@color/theme_light">
+                    <TextView
+                        android:id="@+id/lv_recipient_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:dividerHeight="0dp"
+                        android:padding="10dp"
+                        android:textSize="16sp"
+                        android:text="(Mac)"
+                        android:textColor="@color/theme_color"
+                        android:gravity="right"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/theme_color" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:minHeight="250dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_chat_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="8sp" />
+
+                    <ListView
+                        android:id="@+id/lv_chat_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@null"
+                        android:dividerHeight="0dp"
+                        android:padding="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="-2dp"
+                    android:background="@color/theme_light">
+
+                    <EditText
+                        android:id="@+id/et_chat"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:hint="Type your message"
+                        android:textColor="@color/theme_color"
+                        android:textColorHint="@color/Gray"
+                        android:background="@android:color/transparent"
+                        android:textCursorDrawable="@null"
+                        android:paddingLeft="10dp" />
+
+                    <ImageView
+                        android:id="@+id/btn_send"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="4dp"
+                        android:textAllCaps="false"
+                        android:src="@drawable/ic_send"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
