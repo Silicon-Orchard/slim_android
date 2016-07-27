@@ -123,6 +123,7 @@ public class MainFragmentActivity extends FragmentActivity{
         if(isSimilarStatusFound != null && isSimilarStatusFound) {
             showChatRequestDialog();
         }
+        isSimilarStatusFound = false;
     }
 
     @Override
