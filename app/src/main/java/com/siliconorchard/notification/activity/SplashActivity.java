@@ -45,10 +45,14 @@ public class SplashActivity extends Activity {
         ipAddress = Utils.getDeviceIpAddress();
         mProgress = (ProgressBar) findViewById(R.id.loading_bar);
 
-        fetchProfilePicture();
+        initApp();
     }
 
-
+    private void initApp() {
+        GlobalDataHolder.getInstance().setListHostInfo(null);
+        Utils.startServerService(this);
+        fetchProfilePicture();
+    }
 
     private void fetchProfilePicture() {
         if(GlobalDataHolder.getInstance().getProfilePicBitmap() != null) {

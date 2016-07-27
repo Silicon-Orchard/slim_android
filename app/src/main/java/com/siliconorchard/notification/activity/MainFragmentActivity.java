@@ -4,11 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +24,12 @@ import com.siliconorchard.notification.fragments.FragmentMain;
 import com.siliconorchard.notification.fragments.FragmentProfile;
 import com.siliconorchard.notification.fragments.container.FragmentContainerBase;
 import com.siliconorchard.notification.fragments.container.FragmentContainerMain;
+import com.siliconorchard.notification.model.ChatMessage;
+import com.siliconorchard.notification.service.ServiceServer;
 import com.siliconorchard.notification.utilities.Constant;
 import com.siliconorchard.notification.utilities.Utils;
+
+import org.json.JSONException;
 
 /**
  * Created by adminsiriconorchard on 7/22/16.
@@ -37,6 +43,11 @@ public class MainFragmentActivity extends FragmentActivity{
     private RadioButton mRbProfile;
     private boolean isChatNotificationShown;
 
+    private String ipAddress;
+    private SharedPreferences mSharedPref;
+
+    private static Boolean isSimilarStatusFound;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +59,12 @@ public class MainFragmentActivity extends FragmentActivity{
     private void initView() {
         //tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         //initTabLayout();
+        mSharedPref = getSharedPreferences(Constant.SHARED_PREF_NAME, MODE_PRIVATE);
         mRgTab = (RadioGroup) findViewById(R.id.rg_tab);
         mRbContact = (RadioButton) findViewById(R.id.rb_contact_list);
         mRbProfile = (RadioButton) findViewById(R.id.rb_profile);
         mRbContact.setChecked(true);
+        ipAddress = Utils.getDeviceIpAddress();
         initFragment();
     }
 
@@ -107,12 +120,46 @@ public class MainFragmentActivity extends FragmentActivity{
     protected void onResume() {
         super.onResume();
         registerReceiver(receiverChatReq, new IntentFilter(Constant.RECEIVER_NOTIFICATION_SIMILAR_STATUS_CHAT));
+        if(isSimilarStatusFound != null && isSimilarStatusFound) {
+            showChatRequestDialog();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiverChatReq);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sendBroadCastLeftMessage();
+        ServiceServer.closeSocket();
+    }
+
+    private void sendBroadCastLeftMessage() {
+        try {
+            ChatMessage chatMessage = generateChatMessageBasics();
+            chatMessage.setType(ChatMessage.TYPE_LEFT_APPLICATION);
+            Utils.sendBroadCastMessageToRegisteredClients(chatMessage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ChatMessage generateChatMessageBasics() {
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setDeviceId(Utils.getDeviceId(this, mSharedPref));
+        chatMessage.setIpAddress(ipAddress);
+        chatMessage.setDeviceName(Utils.getDeviceName(mSharedPref));
+        return chatMessage;
+    }
+
+    public static void setIsSimilarStatusFound(Boolean isSimilarFound) {
+        if(isSimilarStatusFound == null) {
+            MainFragmentActivity.isSimilarStatusFound = isSimilarFound;
+        }
     }
 
     private void showChatRequestDialog() {
@@ -132,6 +179,7 @@ public class MainFragmentActivity extends FragmentActivity{
     private BroadcastReceiver receiverChatReq = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("TAG_LOG","Similar status found");
             showChatRequestDialog();
         }
     };

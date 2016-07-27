@@ -55,6 +55,7 @@ public class ServiceServer extends IntentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        stopSelf();
     }
     private void publishResults(byte[] data, int length) {
         String message = new String(data, 0, length);

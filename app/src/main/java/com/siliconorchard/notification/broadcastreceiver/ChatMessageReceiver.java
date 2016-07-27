@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 
+import com.siliconorchard.notification.activity.MainFragmentActivity;
 import com.siliconorchard.notification.asynctask.SendMessageAsync;
 import com.siliconorchard.notification.model.ChatMessage;
 import com.siliconorchard.notification.model.HostInfo;
@@ -30,7 +31,7 @@ public class ChatMessageReceiver extends BroadcastReceiver {
         if (bundle != null) {
             String message = bundle.getString(Constant.KEY_CLIENT_MESSAGE);
             if(message != null) {
-                Log.e("TAG_LOG","Message: "+message);
+                //Log.e("TAG_LOG","Message: "+message);
             } else {
                 Log.e("TAG_LOG","Blank message found");
                 return;
@@ -207,6 +208,7 @@ public class ChatMessageReceiver extends BroadcastReceiver {
         if(myStatusType != -1 && myStatusType == clientStatusType) {
             Intent intentContactModified = new Intent(Constant.RECEIVER_NOTIFICATION_SIMILAR_STATUS_CHAT);
             context.sendBroadcast(intentContactModified);
+            MainFragmentActivity.setIsSimilarStatusFound(true);
         }
     }
 }
