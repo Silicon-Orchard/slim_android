@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SILM-Alert</string>
+    <string name="app_name">SocialEyeZ</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -25,4 +25,7 @@
     <string name="nearest_people">Nearest People</string>
     <string name="gallery">Gallery</string>
     <string name="select_photo">Select Photo</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="start_chatting_popup_text">Similar status found in nearest people.\nWant to chat?</string>
 </resources>

@@ -84,8 +84,8 @@ public class ChatMessage {
             case TYPE_RECEIVE_INFO:
             case TYPE_UPDATED_INFO:
                 this.status = jsonObject.getString(JSON_KEY_STATUS);
-                this.base64Image = jsonObject.getString(JSON_KEY_BASE64_IMAGE);
                 this.statusChannel = jsonObject.getInt(JSON_KEY_STATUS_CHANNEL);
+                this.base64Image = jsonObject.getString(JSON_KEY_BASE64_IMAGE);
                 break;
             case TYPE_LEFT_APPLICATION:
             case TYPE_ONE_TO_ONE_CHAT_REQUEST:
@@ -233,8 +233,8 @@ public class ChatMessage {
             case TYPE_RECEIVE_INFO:
             case TYPE_UPDATED_INFO:
                 jsonObject.put(JSON_KEY_STATUS, this.status);
-                jsonObject.put(JSON_KEY_BASE64_IMAGE, this.base64Image);
                 jsonObject.put(JSON_KEY_STATUS_CHANNEL, this.statusChannel);
+                jsonObject.put(JSON_KEY_BASE64_IMAGE, this.base64Image);
                 break;
             case TYPE_LEFT_APPLICATION:
             case TYPE_ONE_TO_ONE_CHAT_REQUEST:

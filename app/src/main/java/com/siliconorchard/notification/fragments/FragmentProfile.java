@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.siliconorchard.notification.R;
 import com.siliconorchard.notification.dialog.PopupSelectStatus;
 import com.siliconorchard.notification.model.ChatMessage;
+import com.siliconorchard.notification.model.HostInfo;
 import com.siliconorchard.notification.singleton.GlobalDataHolder;
 import com.siliconorchard.notification.utilities.Constant;
 import com.siliconorchard.notification.utilities.Utils;
@@ -25,6 +27,7 @@ import com.siliconorchard.notification.widget.CircularImageView;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by adminsiriconorchard on 7/22/16.
@@ -139,9 +142,10 @@ public class FragmentProfile extends FragmentSelectPictureBase {
             public void onStatusSelect(int position, String status) {
                 mTvStatus.setText(status);
                 statusChannel = position;
+                Log.e("TAG_LOG", "Status channel: " + statusChannel);
             }
         });
-        popupSelectStatus.show(getChildFragmentManager(),"");
+        popupSelectStatus.show(getChildFragmentManager(), "");
     }
 
     private void imageChange() {
@@ -153,14 +157,32 @@ public class FragmentProfile extends FragmentSelectPictureBase {
     private void postProfileUpdate() {
         mSharedPref.edit().putString(Constant.KEY_MY_DEVICE_NAME, mEtName.getText().toString()).commit();
         mSharedPref.edit().putString(Constant.KEY_USER_STATUS, mTvStatus.getText().toString()).commit();
-        mSharedPref.edit().putInt(Constant.KEY_STATUS_CHANNEL, statusChannel);
+        mSharedPref.edit().putInt(Constant.KEY_STATUS_CHANNEL, statusChannel).commit();
+        Log.e("TAG_LOG", "Status channel: " + statusChannel);
         if(mSelectedBitmap != null) {
             Utils.saveSaveImageBitmap(Constant.BASE_PATH + Constant.MY_PP, Constant.PROFILE_PIC_NAME, mSelectedBitmap);
             GlobalDataHolder.getInstance().setProfilePicBitmap(mSelectedBitmap);
         }
         sendBroadcastRequestInfo();
         Toast.makeText(getActivity(), "Saved Successfully!!!", Toast.LENGTH_LONG).show();
+        publishSimilarStatusPopup();
         //this.finish();
+    }
+
+    private void publishSimilarStatusPopup() {
+        if(statusChannel<0) {
+            return;
+        }
+        List<HostInfo> hostInfoList = GlobalDataHolder.getInstance().getListHostInfo();
+        if(hostInfoList != null) {
+            for(int i = 0; i<hostInfoList.size(); i++) {
+                if(hostInfoList.get(i).getStatusId() == statusChannel) {
+                    Intent intentContactModified = new Intent(Constant.RECEIVER_NOTIFICATION_SIMILAR_STATUS_CHAT);
+                    getActivity().sendBroadcast(intentContactModified);
+                    return;
+                }
+            }
+        }
     }
 
     private void processActivityResult(Intent data) {
@@ -181,6 +203,9 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         chatMessage.setIpAddress(ipAddress);
         chatMessage.setDeviceName(Utils.getDeviceName(mSharedPref));
         chatMessage.setStatus(mSharedPref.getString(Constant.KEY_USER_STATUS, ""));
+        statusChannel = mSharedPref.getInt(Constant.KEY_STATUS_CHANNEL, -1);
+        chatMessage.setStatusChannel(statusChannel);
+        Log.e("TAG_LOG", "Status channel: " + statusChannel);
         if(GlobalDataHolder.getInstance().getProfilePicBitmap() != null) {
             chatMessage.setBase64Image(Utils.bitmapToBase64String(GlobalDataHolder.getInstance().getProfilePicBitmap()));
         } else {
@@ -194,7 +219,7 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         try {
             ChatMessage chatMessage = generateChatMessageBasics();
             chatMessage.setType(ChatMessage.TYPE_UPDATED_INFO);
-            Utils.sendBroadCastMessage(chatMessage);
+            Utils.sendBroadCastMessageToRegisteredClients(chatMessage);
         } catch (JSONException e) {
             e.printStackTrace();
         }

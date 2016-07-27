@@ -36,6 +36,7 @@ public class Constant {
     public static final String RECEIVER_NOTIFICATION_CHAT_ACCEPT = "com.siliconorchard.notification.receiver.chat_accept";
     public static final String SERVICE_NOTIFICATION_STRING_CHAT_FOREGROUND = "com.siliconorchard.notification.service.receiver.foreground";
     public static final String SERVICE_NOTIFICATION_STRING_CHAT_BACKGROUND = "com.siliconorchard.notification.service.receiver.background";
+    public static final String RECEIVER_NOTIFICATION_SIMILAR_STATUS_CHAT = "com.siliconorchard.notification.receiver.similar_status_chat";
 
     public static final int REQUEST_CODE_SELECT_SINGLE_PICTURE = 4551;
     public static final int REQUEST_CODE_SELECT_ANY_FILE = 4552;
@@ -59,7 +60,7 @@ public class Constant {
             "Lunch",
             "Coffee",
             "Pool",
-            "Foosball",
+            "Football",
             "Board Games",
             "Hangout",
             "Walk",

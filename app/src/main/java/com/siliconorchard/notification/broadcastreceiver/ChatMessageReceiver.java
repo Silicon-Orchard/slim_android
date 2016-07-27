@@ -92,6 +92,8 @@ public class ChatMessageReceiver extends BroadcastReceiver {
                     }
                     Log.e("TAG_LOG", sendingMessage.getJsonString());
                     sendMessageAsync.execute(hostInfo, sendingMessage.getJsonString());
+
+                    publishSimilarStatusChatNotification(context, receivedMessage.getStatusChannel(), sharedPreferences);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -102,6 +104,8 @@ public class ChatMessageReceiver extends BroadcastReceiver {
                     if(GlobalDataHolder.getInstance().addToHostList(hInfo, Utils.base64StringToBitmap(receivedMessage.getBase64Image()))) {
                         publishContactModifyNotification(context);
                     }
+
+                    publishSimilarStatusChatNotification(context, receivedMessage.getStatusChannel(), sharedPreferences);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -113,6 +117,8 @@ public class ChatMessageReceiver extends BroadcastReceiver {
                     HostInfo hInfo = Utils.getHostInfoFromChatMessage(receivedMessage);
                     GlobalDataHolder.getInstance().updateHostList(hInfo, Utils.base64StringToBitmap(receivedMessage.getBase64Image()));
                     publishContactModifyNotification(context);
+
+                    publishSimilarStatusChatNotification(context, receivedMessage.getStatusChannel(), sharedPreferences);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -169,6 +175,7 @@ public class ChatMessageReceiver extends BroadcastReceiver {
         chatMessage.setDeviceId(sharedPreferences.getString(Constant.KEY_DEVICE_ID, Constant.DEVICE_ID_UNKNOWN));
         chatMessage.setDeviceName(sharedPreferences.getString(Constant.KEY_MY_DEVICE_NAME, Constant.DEVICE_ID_UNKNOWN));
         chatMessage.setStatus(sharedPreferences.getString(Constant.KEY_USER_STATUS, ""));
+        chatMessage.setStatusChannel(sharedPreferences.getInt(Constant.KEY_STATUS_CHANNEL, -1));
         switch (type) {
             case ChatMessage.TYPE_CHANNEL_DUPLICATE:
                 chatMessage.setChannelNumber(channelNumber);
@@ -193,5 +200,13 @@ public class ChatMessageReceiver extends BroadcastReceiver {
         Intent intentContactModified = new Intent(Constant.RECEIVER_NOTIFICATION_CHAT_ACCEPT);
         intentContactModified.putExtra(Constant.KEY_HOST_INFO, hostInfo);
         context.sendBroadcast(intentContactModified);
+    }
+
+    private void publishSimilarStatusChatNotification(Context context, int clientStatusType, SharedPreferences sharedPreferences) {
+        int myStatusType = sharedPreferences.getInt(Constant.KEY_STATUS_CHANNEL,-1);
+        if(myStatusType != -1 && myStatusType == clientStatusType) {
+            Intent intentContactModified = new Intent(Constant.RECEIVER_NOTIFICATION_SIMILAR_STATUS_CHAT);
+            context.sendBroadcast(intentContactModified);
+        }
     }
 }

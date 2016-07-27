@@ -157,6 +157,7 @@ public class Utils {
         hostInfo.setDeviceId(chatMessage.getDeviceId());
         hostInfo.setDeviceName(chatMessage.getDeviceName());
         hostInfo.setStatus(chatMessage.getStatus());
+        hostInfo.setStatusId(chatMessage.getStatusChannel());
         return hostInfo;
     }
 

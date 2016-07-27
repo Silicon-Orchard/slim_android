@@ -132,6 +132,7 @@ public class SplashActivity extends Activity {
         chatMessage.setIpAddress(ipAddress);
         chatMessage.setDeviceName(Utils.getDeviceName(mSharedPref));
         chatMessage.setStatus(mSharedPref.getString(Constant.KEY_USER_STATUS, ""));
+        chatMessage.setStatusChannel(mSharedPref.getInt(Constant.KEY_STATUS_CHANNEL,-1));
         if(GlobalDataHolder.getInstance().getProfilePicBitmap() != null) {
             chatMessage.setBase64Image(Utils.bitmapToBase64String(GlobalDataHolder.getInstance().getProfilePicBitmap()));
         } else {

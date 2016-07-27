@@ -1,5 +1,9 @@
 package com.siliconorchard.notification.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,10 +17,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.siliconorchard.notification.R;
+import com.siliconorchard.notification.dialog.DialogChatRequest;
 import com.siliconorchard.notification.fragments.FragmentMain;
 import com.siliconorchard.notification.fragments.FragmentProfile;
 import com.siliconorchard.notification.fragments.container.FragmentContainerBase;
 import com.siliconorchard.notification.fragments.container.FragmentContainerMain;
+import com.siliconorchard.notification.utilities.Constant;
 import com.siliconorchard.notification.utilities.Utils;
 
 /**
@@ -29,6 +35,7 @@ public class MainFragmentActivity extends FragmentActivity{
 
     private RadioButton mRbContact;
     private RadioButton mRbProfile;
+    private boolean isChatNotificationShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +91,7 @@ public class MainFragmentActivity extends FragmentActivity{
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 Fragment fragment = null;
-                if(checkedId == R.id.rb_contact_list) {
+                if (checkedId == R.id.rb_contact_list) {
                     fragment = new FragmentMain();
                 } else {
                     fragment = new FragmentProfile();
@@ -96,4 +103,36 @@ public class MainFragmentActivity extends FragmentActivity{
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiverChatReq, new IntentFilter(Constant.RECEIVER_NOTIFICATION_SIMILAR_STATUS_CHAT));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiverChatReq);
+    }
+
+    private void showChatRequestDialog() {
+        if(!isChatNotificationShown) {
+            isChatNotificationShown = true;
+            DialogChatRequest dialogChatRequest = new DialogChatRequest();
+            dialogChatRequest.setOnDismissListener(new DialogChatRequest.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    isChatNotificationShown = false;
+                }
+            });
+            dialogChatRequest.show(getFragmentManager(), "showChatRequestDialog");
+        }
+    }
+
+    private BroadcastReceiver receiverChatReq = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            showChatRequestDialog();
+        }
+    };
 }
