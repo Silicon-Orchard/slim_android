@@ -137,6 +137,7 @@ public class MainFragmentActivity extends FragmentActivity{
         super.onDestroy();
         sendBroadCastLeftMessage();
         ServiceServer.closeSocket();
+        isSimilarStatusFound = null;
     }
 
     private void sendBroadCastLeftMessage() {
