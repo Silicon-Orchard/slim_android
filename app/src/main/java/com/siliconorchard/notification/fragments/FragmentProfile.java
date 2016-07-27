@@ -202,7 +202,7 @@ public class FragmentProfile extends FragmentSelectPictureBase {
             if(mSelectedBitmap != null) {
                 mCivProfile.setImageBitmap(mSelectedBitmap);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -237,7 +237,7 @@ public class FragmentProfile extends FragmentSelectPictureBase {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == Constant.REQUEST_CODE_SELECT_SINGLE_PICTURE && resultCode == Activity.RESULT_OK) {
+        if(resultCode == Activity.RESULT_OK) {
             processActivityResult(data);
         } else {
             super.onActivityResult(requestCode, resultCode, data);

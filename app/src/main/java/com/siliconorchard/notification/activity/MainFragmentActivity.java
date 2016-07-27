@@ -140,6 +140,11 @@ public class MainFragmentActivity extends FragmentActivity{
         isSimilarStatusFound = null;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void sendBroadCastLeftMessage() {
         try {
             ChatMessage chatMessage = generateChatMessageBasics();
