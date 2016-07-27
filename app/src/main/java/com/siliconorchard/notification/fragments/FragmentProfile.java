@@ -100,15 +100,13 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         mIvEditName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mTvName.getVisibility() == View.GONE) {
-                    mName = mEtName.getText().toString();
-                    mTvName.setText(mName);
-                    mTvName.setVisibility(View.VISIBLE);
-                    mEtName.setVisibility(View.GONE);
-                } else {
-                    mTvName.setVisibility(View.GONE);
-                    mEtName.setVisibility(View.VISIBLE);
-                }
+                showNameEdit();
+            }
+        });
+        mTvName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNameEdit();
             }
         });
 
@@ -133,6 +131,18 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         });
 
         mTvStatus.setMovementMethod(new ScrollingMovementMethod());
+    }
+
+    private void showNameEdit() {
+        if (mTvName.getVisibility() == View.GONE) {
+            mName = mEtName.getText().toString();
+            mTvName.setText(mName);
+            mTvName.setVisibility(View.VISIBLE);
+            mEtName.setVisibility(View.GONE);
+        } else {
+            mTvName.setVisibility(View.GONE);
+            mEtName.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setStatus() {
