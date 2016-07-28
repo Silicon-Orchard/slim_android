@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -71,11 +72,14 @@ public class SplashActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        boolean isPermissionRequested = Utils.findDeviceID(this, mSharedPref);
         if(ipAddress == null || ipAddress.length()<5) {
             showWifiNotEnabledDialog();
         } else {
-            sendBroadcastRequestInfo();
-            showFakeProgress();
+            if(!isPermissionRequested) {
+                sendBroadcastRequestInfo();
+                showFakeProgress();
+            }
         }
 
     }
@@ -112,6 +116,27 @@ public class SplashActivity extends Activity {
         }.execute();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case Constant.READ_PHONE_STATE_PERMISSION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Utils.getDeviceIdFromTelephonyManager(this, mSharedPref);
+
+                } else {
+                    Utils.setDeviceId(Constant.DEVICE_ID_UNKNOWN);
+                    mSharedPref.edit().putString(Constant.KEY_DEVICE_ID, Constant.DEVICE_ID_UNKNOWN).commit();
+                }
+                sendBroadcastRequestInfo();
+                showFakeProgress();
+                break;
+            }
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     private void showWifiNotEnabledDialog() {
         AlertDialog.Builder  builder = Utils.createAlertDialog(this, R.string.wifi_not_enabled,
                 R.string.error_wifi_not_enabled_please_enable);
@@ -132,7 +157,7 @@ public class SplashActivity extends Activity {
 
     private ChatMessage generateChatMessageBasics() {
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setDeviceId(Constant.DEVICE_ID_UNKNOWN);
+        chatMessage.setDeviceId(Utils.getDeviceId(this, mSharedPref));
         chatMessage.setIpAddress(ipAddress);
         chatMessage.setDeviceName(Utils.getDeviceName(mSharedPref));
         chatMessage.setStatus(mSharedPref.getString(Constant.KEY_USER_STATUS, ""));

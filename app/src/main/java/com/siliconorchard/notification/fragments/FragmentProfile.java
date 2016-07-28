@@ -209,7 +209,7 @@ public class FragmentProfile extends FragmentSelectPictureBase {
 
     private ChatMessage generateChatMessageBasics() {
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setDeviceId(Constant.DEVICE_ID_UNKNOWN);
+        chatMessage.setDeviceId(Utils.getDeviceId(getActivity(), mSharedPref));
         chatMessage.setIpAddress(ipAddress);
         chatMessage.setDeviceName(Utils.getDeviceName(mSharedPref));
         chatMessage.setStatus(mSharedPref.getString(Constant.KEY_USER_STATUS, ""));
