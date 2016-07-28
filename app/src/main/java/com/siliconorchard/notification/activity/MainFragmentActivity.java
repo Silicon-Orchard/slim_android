@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.siliconorchard.notification.R;
 import com.siliconorchard.notification.dialog.DialogChatRequest;
+import com.siliconorchard.notification.fragments.FragmentChatRooms;
 import com.siliconorchard.notification.fragments.FragmentMain;
 import com.siliconorchard.notification.fragments.FragmentProfile;
 import com.siliconorchard.notification.fragments.container.FragmentContainerBase;
@@ -40,7 +41,6 @@ public class MainFragmentActivity extends FragmentActivity{
     private RadioGroup mRgTab;
 
     private RadioButton mRbContact;
-    private RadioButton mRbProfile;
     private boolean isChatNotificationShown;
 
     private String ipAddress;
@@ -62,7 +62,6 @@ public class MainFragmentActivity extends FragmentActivity{
         mSharedPref = getSharedPreferences(Constant.SHARED_PREF_NAME, MODE_PRIVATE);
         mRgTab = (RadioGroup) findViewById(R.id.rg_tab);
         mRbContact = (RadioButton) findViewById(R.id.rb_contact_list);
-        mRbProfile = (RadioButton) findViewById(R.id.rb_profile);
         mRbContact.setChecked(true);
         ipAddress = Utils.getDeviceIpAddress();
         initFragment();
@@ -104,10 +103,16 @@ public class MainFragmentActivity extends FragmentActivity{
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 Fragment fragment = null;
-                if (checkedId == R.id.rb_contact_list) {
-                    fragment = new FragmentMain();
-                } else {
-                    fragment = new FragmentProfile();
+                switch (checkedId) {
+                    case R.id.rb_contact_list:
+                        fragment = new FragmentMain();
+                        break;
+                    case R.id.rb_profile:
+                        fragment = new FragmentProfile();
+                        break;
+                    case R.id.rb_chat_rooms:
+                        fragment = new FragmentChatRooms();
+                        break;
                 }
                 FragmentContainerBase fragmentContainerBase = (FragmentContainerBase) getSupportFragmentManager().getFragments().get(0);
                 fragmentContainerBase.replaceFragment(fragment, false);

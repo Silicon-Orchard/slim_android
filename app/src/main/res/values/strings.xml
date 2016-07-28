@@ -28,4 +28,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="start_chatting_popup_text">Similar status found in nearest people.\nWant to chat?</string>
+    <string name="chat_room">Chat Rooms</string>
 </resources>
