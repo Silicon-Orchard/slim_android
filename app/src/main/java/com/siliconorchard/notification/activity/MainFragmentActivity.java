@@ -147,7 +147,8 @@ public class MainFragmentActivity extends FragmentActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        FragmentContainerMain fragmentContainerMain = (FragmentContainerMain) getSupportFragmentManager().getFragments().get(0);
+        fragmentContainerMain.onActivityResult(requestCode, resultCode, data);
     }
 
     private void sendBroadCastLeftMessage() {

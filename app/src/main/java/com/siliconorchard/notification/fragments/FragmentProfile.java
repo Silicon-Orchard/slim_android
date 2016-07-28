@@ -165,7 +165,7 @@ public class FragmentProfile extends FragmentSelectPictureBase {
 
 
     private void postProfileUpdate() {
-        mSharedPref.edit().putString(Constant.KEY_MY_DEVICE_NAME, mEtName.getText().toString()).commit();
+        Utils.setDeviceName(mSharedPref, mEtName.getText().toString());
         mSharedPref.edit().putString(Constant.KEY_USER_STATUS, mTvStatus.getText().toString()).commit();
         mSharedPref.edit().putInt(Constant.KEY_STATUS_CHANNEL, statusChannel).commit();
         Log.e("TAG_LOG", "Status channel: " + statusChannel);
@@ -215,7 +215,7 @@ public class FragmentProfile extends FragmentSelectPictureBase {
         chatMessage.setStatus(mSharedPref.getString(Constant.KEY_USER_STATUS, ""));
         statusChannel = mSharedPref.getInt(Constant.KEY_STATUS_CHANNEL, -1);
         chatMessage.setStatusChannel(statusChannel);
-        Log.e("TAG_LOG", "Status channel: " + statusChannel);
+        Log.e("TAG_LOG", "Device Name: " + Utils.getDeviceName(mSharedPref));
         if(GlobalDataHolder.getInstance().getProfilePicBitmap() != null) {
             chatMessage.setBase64Image(Utils.bitmapToBase64String(GlobalDataHolder.getInstance().getProfilePicBitmap()));
         } else {
