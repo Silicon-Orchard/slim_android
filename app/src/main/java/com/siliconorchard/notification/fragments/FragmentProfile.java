@@ -198,7 +198,7 @@ public class FragmentProfile extends FragmentSelectPictureBase {
     private void processActivityResult(Intent data) {
         try {
             initUriAndFile(data, true);
-            mSelectedBitmap = Utils.decodeImageFile(mSelectedFile, 250);
+            mSelectedBitmap = Utils.decodeImageFile(mSelectedFile, Constant.MINIMUM_IMAGE_SIZE);
             if(mSelectedBitmap != null) {
                 mCivProfile.setImageBitmap(mSelectedBitmap);
             }

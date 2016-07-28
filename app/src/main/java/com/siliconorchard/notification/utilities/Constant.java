@@ -53,6 +53,8 @@ public class Constant {
     public static final String KEY_USER_STATUS = "user_status";
     public static final String KEY_STATUS_CHANNEL = "status_channel";
 
+    public static final int MINIMUM_IMAGE_SIZE = 200;
+
 
     public static String[] STATUSES = {
             "Ping Pong",
