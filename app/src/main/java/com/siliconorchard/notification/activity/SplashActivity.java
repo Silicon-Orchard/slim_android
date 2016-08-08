@@ -9,11 +9,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.siliconorchard.notification.R;
+import com.siliconorchard.notification.dialog.PopupWifiNotFound;
 import com.siliconorchard.notification.model.ChatMessage;
 import com.siliconorchard.notification.singleton.GlobalDataHolder;
 import com.siliconorchard.notification.utilities.Constant;
@@ -27,7 +29,7 @@ import java.io.IOException;
 /**
  * Created by adminsiriconorchard on 7/13/16.
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends FragmentActivity {
 
     private String ipAddress;
     private SharedPreferences mSharedPref;
@@ -138,7 +140,15 @@ public class SplashActivity extends Activity {
     }
 
     private void showWifiNotEnabledDialog() {
-        AlertDialog.Builder  builder = Utils.createAlertDialog(this, R.string.wifi_not_enabled,
+        PopupWifiNotFound popupWifiNotFound = new PopupWifiNotFound();
+        popupWifiNotFound.setOnDismissListener(new PopupWifiNotFound.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                SplashActivity.this.finish();
+            }
+        });
+        popupWifiNotFound.show(getSupportFragmentManager(), "");
+        /*AlertDialog.Builder  builder = Utils.createAlertDialog(this, R.string.wifi_not_enabled,
                 R.string.error_wifi_not_enabled_please_enable);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -151,7 +161,7 @@ public class SplashActivity extends Activity {
         });
         mAlertDialog = builder.create();
         mAlertDialog.show();
-        mAlertDialog.getWindow().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.shape_voice_activity_bg));
+        mAlertDialog.getWindow().setBackgroundDrawable(this.getResources().getDrawable(R.drawable.shape_voice_activity_bg));*/
     }
 
 
