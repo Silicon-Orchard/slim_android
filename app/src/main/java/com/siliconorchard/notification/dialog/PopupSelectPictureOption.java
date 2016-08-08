@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,7 +29,6 @@ public class PopupSelectPictureOption extends PopupBase {
 
     @Override
     protected void initView(View view) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         mTvTitle = (TextView) view.findViewById(R.id.tv_popup_title);
         mLayoutGallery = (LinearLayout) view.findViewById(R.id.layout_select_gallery);
         mLayoutCamera = (LinearLayout) view.findViewById(R.id.layout_select_camera);

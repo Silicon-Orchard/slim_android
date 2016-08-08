@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +38,6 @@ public class PopupSelectStatus extends PopupBase {
 
     @Override
     protected void initView(View view) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         mLvStatus = (ListView) view.findViewById(R.id.lv_status);
         mEtStatus = (EditText) view.findViewById(R.id.et_status);
         mBtnOk = (Button) view.findViewById(R.id.btn_ok);
